@@ -6,7 +6,7 @@ import pytest
 from homework.models import Product, Cart
 
 
-@pytest.fixture
+@pytest.fixture()
 def product():
     return Product("book", 100, "This is a book", 1000)
 
@@ -93,6 +93,9 @@ def test_buy(self, cart, product):
     cart.add_product(product)
     cart.buy()
     assert len(cart.products) == 0
+
+
+
 
 
 
