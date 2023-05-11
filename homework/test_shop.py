@@ -12,7 +12,7 @@ def product():
 
 
 @pytest.fixture()
-def Cart():
+def cart():
     return Cart()
 
 
@@ -55,48 +55,41 @@ class TestCart:
         Например, негативные тесты, ожидающие ошибку (используйте pytest.raises, чтобы проверить это)
     """
 
+    def test_add_product(self, cart, product):
+        assert len(cart.products) == 0
+        cart.add_product(product)
+        assert cart.products[product] == 1
+        cart.add_product(product, 999)
+        assert cart.products[product] == 1000
 
-def test_add_product(self, cart, product):
-    assert len(cart.products) == 0
-    cart.add_product(product)
-    assert cart.products[product] == 1
-    cart.add_product(product, 999)
-    assert cart.products[product] == 1000
+    def test_remove_product(self, product, cart):
+        cart.add_product(product, 144)
+        cart.remove_product(product, 7)
+        assert cart.products[product] == 137
+        cart.remove_product(product)
+        assert len(cart.products) == 0
+        # cart.add_product(product, 100)
+        # cart.remove_product(product, 100)
+        # assert cart.products[product] == 0
+        cart.add_product(product, 300)
+        cart.remove_product(product, 350)
+        assert len(cart.products) == 0
 
+    def test_clear(self, cart, product):
+        cart.add_product(product, 45)
+        cart.clear()
+        assert len(cart.products) == 0
 
-def test_remove_product(self, product, cart):
-    cart.add_product(product, 144)
-    cart.remove_product(product, 7)
-    assert cart.products[product] == 137
-    cart.remove_product(product)
-    assert len(cart.products) == 0
-    cart.add_product(product, 100)
-    cart.remove_product(product, 100)
-    assert cart.products[product] == 0
-    cart.add_product(product, 300)
-    cart.remove_product(product, 350)
-    assert len(cart.products) == 0
+    def test_get_total_price(self, cart, product):
+        cart.add_product(product, 36)
+        assert cart.get_total_price() == 3600
 
+    def test_buy(self, cart, product):
+        cart.add_product(product, 10)
+        cart.buy()
+        assert len(cart.products) == 0
 
-def test_clear(self, cart, product):
-    cart.add_product(product, 45)
-    cart.clear()
-    assert len(cart.products) == 0
-
-
-def test_get_total_price(self, cart, product):
-    cart.add_product(product, 36)
-    assert cart.get_total_price() == 3600
-
-
-def test_buy(self, cart, product):
-    cart.add_product(product)
-    cart.buy()
-    assert len(cart.products) == 0
-
-
-
-
-
-
-
+    def test_product_buy_more_than_available(self, cart, product):
+        with pytest.raises(ValueError):
+            product.buy(1001)
+            assert cart.buy()
