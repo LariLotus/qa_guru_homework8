@@ -68,9 +68,9 @@ class TestCart:
         assert cart.products[product] == 137
         cart.remove_product(product)
         assert len(cart.products) == 0
-        # cart.add_product(product, 100)
-        # cart.remove_product(product, 100)
-        # assert cart.products[product] == 0
+        cart.add_product(product, 100)
+        cart.remove_product(product, 100)
+        assert len(cart.products) == 0
         cart.add_product(product, 300)
         cart.remove_product(product, 350)
         assert len(cart.products) == 0
